@@ -10,16 +10,19 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 
 
 public class Limelight extends SubsystemBase implements Runnable{
   RobotContainer rc = new RobotContainer();
-
+  Robot r = new Robot();
 
   final double h2 = 90.875; //height of target
   final double h1 = 14.75; //height of limeligt
+
+  boolean inRANGE;
   
   double hoodAngle;
   double calculateAngle;
@@ -41,7 +44,7 @@ public class Limelight extends SubsystemBase implements Runnable{
     final double angleboth = a1 + a2;
     final double tanValue = Math.tan(angleboth);
   
-    double distanceFromTarget = heightValue/tanValue;
+    double distanceFromTarget = (heightValue/tanValue);
   
   
 
@@ -71,9 +74,14 @@ if(rc.driveController().getRawAxis(3) > 0.7 && (NetworkTableInstance.getDefault(
       rc.drive((rc.driveController().getX(Hand.kRight)), -(rc.driveController().getY(Hand.kLeft)));
 
   }
+  if(distanceFromTarget > 160 && distanceFromTarget < 200){
+    inRANGE = true;
+  } else {
+    inRANGE = false;
+  }
     }
   }
-  
+
   @Override
   public void periodic() {
   }
@@ -82,4 +90,16 @@ if(rc.driveController().getRawAxis(3) > 0.7 && (NetworkTableInstance.getDefault(
     double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
     double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
   }
+
+public boolean inRANGE(double distanceFromTarget){
+
+  if(distanceFromTarget > 160 && distanceFromTarget < 200){
+    return inRANGE = true;
+  } 
+  
+  else {
+    return inRANGE = false;
+
+  }
+}
 }

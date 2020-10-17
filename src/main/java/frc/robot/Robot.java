@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveTrn;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Shooter;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,6 +26,9 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   DriveTrn DT;
   Limelight LL;
+  Shooter S;
+
+  private boolean inRANGE;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -37,6 +41,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     DT = new DriveTrn();
     LL = new Limelight();
+    S = new Shooter();
   }
 
   /**
@@ -94,6 +99,8 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
+      
+      inRANGE = false;
     }
   }
 
