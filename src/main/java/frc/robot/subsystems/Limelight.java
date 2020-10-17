@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
@@ -18,11 +19,12 @@ import frc.robot.RobotContainer;
 public class Limelight extends SubsystemBase implements Runnable{
   RobotContainer rc = new RobotContainer();
   Robot r = new Robot();
+  Shooter S = new Shooter();
 
   final double h2 = 90.875; //height of target
   final double h1 = 14.75; //height of limeligt
 
-  boolean inRANGE;
+  public boolean inRANGE;
   
   double hoodAngle;
   double calculateAngle;
@@ -74,11 +76,9 @@ if(rc.driveController().getRawAxis(3) > 0.7 && (NetworkTableInstance.getDefault(
       rc.drive((rc.driveController().getX(Hand.kRight)), -(rc.driveController().getY(Hand.kLeft)));
 
   }
-  if(distanceFromTarget > 160 && distanceFromTarget < 200){
-    inRANGE = true;
-  } else {
-    inRANGE = false;
-  }
+
+  SmartDashboard.putNumber("distance", heightValue/tanValue); //distance from target*/
+
     }
   }
 

@@ -37,7 +37,7 @@ public class DriveTrn extends SubsystemBase implements Runnable{
 
   public DriveTrn() {
 
-m_talon1 = new WPI_TalonFX(1);
+  m_talon1 = new WPI_TalonFX(1);
   m_talon2 = new WPI_TalonFX(2); 
   m_talon3 = new WPI_TalonFX(3);
   m_talon4 = new WPI_TalonFX(4);
@@ -62,8 +62,9 @@ m_talon6.setNeutralMode(brake);
 m_talon1.setInverted(kInvertType);
 m_talon2.setInverted(kInvertType);
 m_talon5.setInverted(kInvertType);
-  Thread DT = new Thread(this);
-  DT.start();
+Thread DT = new Thread(this);
+DT.start();
+
   }
   public void run(){
     while(true){

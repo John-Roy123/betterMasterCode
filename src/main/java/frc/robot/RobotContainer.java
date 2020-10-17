@@ -11,9 +11,6 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-//import frc.robot.commands.ExampleCommand;
-//import frc.robot.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveTrn;
 
 /**
@@ -28,9 +25,10 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   */
-
+    SpeedControllerGroup left = new SpeedControllerGroup(DriveTrn.m_talon1, DriveTrn.m_talon2, DriveTrn.m_talon5);
+    SpeedControllerGroup right = new SpeedControllerGroup(DriveTrn.m_talon3, DriveTrn.m_talon4, DriveTrn.m_talon6);
   
-  XboxController operateContoler = new XboxController(1);
+
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -59,8 +57,6 @@ public class RobotContainer {
   }
 
   public void drive(double x, double z){
-    SpeedControllerGroup left = new SpeedControllerGroup(DriveTrn.m_talon1, DriveTrn.m_talon2, DriveTrn.m_talon5);
-    SpeedControllerGroup right = new SpeedControllerGroup(DriveTrn.m_talon3, DriveTrn.m_talon4, DriveTrn.m_talon6);
     DifferentialDrive drive = new DifferentialDrive(left, right);
     drive.setMaxOutput(0.60);
     drive.arcadeDrive(x,z);

@@ -18,22 +18,28 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class Shooter extends SubsystemBase implements Runnable{
-  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
+  public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   private CANPIDController m_pidController;
     final CANSparkMax m_shooterright;
     final CANSparkMax m_shooterleft;
 
-    private CANEncoder shootEncoder1;
-    private CANEncoder shootEncoder2;
+    public static CANEncoder shootEncoder1;
+    public static CANEncoder shootEncoder2;
 
     final int shooterCANID_1 = 11;
     final int shooterCANID_2 = 14;
+
+    Limelight L = new Limelight();
+
+    public static double maxRPM = 4000; 
 
     RobotContainer rc = new RobotContainer();
   /**
    * Creates a new Shooter.
    */
   public Shooter() {
+
+ 
 
   m_shooterleft = new CANSparkMax(shooterCANID_1, MotorType.kBrushless);
   m_shooterright = new CANSparkMax(shooterCANID_2, MotorType.kBrushless);
@@ -54,7 +60,7 @@ public class Shooter extends SubsystemBase implements Runnable{
   kFF = (10/5700) * 4000; 
   kMaxOutput = 1; 
   kMinOutput = 0;
-  maxRPM = 4000;
+  
 
   // set PID coefficients
   m_pidController.setP(kP);
@@ -104,29 +110,14 @@ public void run() {
      m_pidController.setOutputRange(min, max); 
      kMinOutput = min; kMaxOutput = max; 
    }
-     double setPoint = rc.operateController().getRawAxis(1)*maxRPM;
+
    if (rc.operateController().getRawAxis(2) > 0.7){
      m_pidController.setReference(5200 , ControlType.kVelocity);
    } else {
      m_pidController.setReference(0 , ControlType.kVelocity);
    }
      
-     SmartDashboard.putNumber("SetPoint", setPoint);
-     SmartDashboard.putNumber("ProcessVariable", shootEncoder1.getVelocity());
-     SmartDashboard.putNumber("ProcessVariable", shootEncoder2.getVelocity());
 
-     SmartDashboard.putNumber("distance", heightValue/tanValue); //distance from target*/
-     SmartDashboard.putNumber("Pot", (((s_hood.get() * 163.429271856365)-2.603118)) + 23); //angle of hood
-     SmartDashboard.putNumber("index encoder", m_indexer.getSensorCollection().getQuadraturePosition());
-     SmartDashboard.putNumber("NeoEncoder1", shootEncoder1.getVelocity());
-     SmartDashboard.putNumber("NeoEncoder2", shootEncoder2.getVelocity()); 
-     SmartDashboard.putNumber("ultra1", s_ultra1.getRangeInches());
-     SmartDashboard.putBoolean("BallIndex", s_ultra1Range);
-     SmartDashboard.putBoolean("Index FULL", s_ultra2Range);
-     SmartDashboard.putNumber("Gyro Angle", s_roboGyro.getAngle()); 
-     SmartDashboard.putNumber("Ballcount", ballcount);
-     SmartDashboard.putNumber("Index reset Timer", t_indexreset);
-     SmartDashboard.putBoolean("CANSHOOT", inRANGE);
     }
 }
 }

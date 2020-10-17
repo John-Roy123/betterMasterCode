@@ -7,10 +7,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveTrn;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
@@ -21,14 +25,17 @@ import frc.robot.subsystems.Shooter;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
+  private AnalogPotentiometer s_hood;
 
-  private RobotContainer m_robotContainer;
+
+  private RobotContainer rc;
   DriveTrn DT;
   Limelight LL;
   Shooter S;
+  Indexer I;
 
   private boolean inRANGE;
+  public Gyro gyro;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -38,10 +45,43 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    rc = new RobotContainer();
     DT = new DriveTrn();
     LL = new Limelight();
     S = new Shooter();
+    I = new Indexer();
+    gyro = new Gyro(){
+
+    @Override
+    public void close() throws Exception {
+      // TODO Auto-generated method stub
+      
+    }
+  
+    @Override
+    public void reset() {
+      // TODO Auto-generated method stub
+      
+    }
+  
+    @Override
+    public double getRate() {
+      // TODO Auto-generated method stub
+      return 0;
+    }
+  
+    @Override
+    public double getAngle() {
+      // TODO Auto-generated method stub
+      return 0;
+    }
+  
+    @Override
+    public void calibrate() {
+      // TODO Auto-generated method stub
+      
+    }
+  };
   }
 
   /**
@@ -60,28 +100,13 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
   }
 
-  /**
-   * This function is called once each time the robot enters Disabled mode.
-   */
-  @Override
-  public void disabledInit() {
-  }
 
-  @Override
-  public void disabledPeriodic() {
-  }
-
-  /**
-   * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
-   */
   @Override
   public void autonomousInit() {
     //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+
   }
 
   /**
@@ -97,30 +122,37 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-      
-      inRANGE = false;
-    }
+
   }
 
-  /**
-   * This function is called periodically during operator control.
-   */
   @Override
   public void teleopPeriodic() {
-  }
+    double setPoint = rc.operateController().getRawAxis(1)*S.maxRPM;
+    SmartDashboard.putNumber("SetPoint", setPoint);
 
-  @Override
-  public void testInit() {
-    // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
-  }
+    SmartDashboard.putNumber("ProcessVariable", S.shootEncoder1.getVelocity());
+    SmartDashboard.putNumber("ProcessVariable", S.shootEncoder2.getVelocity());
 
-  /**
-   * This function is called periodically during test mode.
-   */
-  @Override
-  public void testPeriodic() {
-  }
+    
+    SmartDashboard.putNumber("Pot", (((s_hood.get() * 163.429271856365)-2.603118)) + 23); //angle of hood
+    SmartDashboard.putNumber("index encoder", I.m_indexer.getSensorCollection().getQuadraturePosition());
+
+    SmartDashboard.putNumber("NeoEncoder1", S.shootEncoder1.getVelocity());
+    SmartDashboard.putNumber("NeoEncoder2", S.shootEncoder2.getVelocity()); 
+
+    SmartDashboard.putNumber("ultra1", I.s_ultra1.getRangeInches());
+
+    SmartDashboard.putBoolean("BallIndex", I.s_ultra1Range);
+    SmartDashboard.putBoolean("Index FULL", I.s_ultra2Range);
+    SmartDashboard.putNumber("Ballcount", I.ballcount);
+    SmartDashboard.putNumber("Index reset Timer", I.t_indexreset);
+
+    SmartDashboard.putNumber("Gyro Angle", gyro.getAngle()); 
+
+    SmartDashboard.putBoolean("CANSHOOT", LL.inRANGE);
+  
+
+ 
 }
+}
+
