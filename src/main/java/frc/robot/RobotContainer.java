@@ -25,8 +25,8 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   */
-    SpeedControllerGroup left = new SpeedControllerGroup(DriveTrn.m_talon1, DriveTrn.m_talon2, DriveTrn.m_talon5);
-    SpeedControllerGroup right = new SpeedControllerGroup(DriveTrn.m_talon3, DriveTrn.m_talon4, DriveTrn.m_talon6);
+    public SpeedControllerGroup left = new SpeedControllerGroup(DriveTrn.m_talon1, DriveTrn.m_talon2, DriveTrn.m_talon5);
+    public SpeedControllerGroup right = new SpeedControllerGroup(DriveTrn.m_talon3, DriveTrn.m_talon4, DriveTrn.m_talon6);
   
 
 

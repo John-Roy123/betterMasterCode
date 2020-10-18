@@ -7,20 +7,37 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.DriveTrn;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 
 public class auto extends CommandBase {
+
+  public double circumference = 6 * Math.PI;
+  public double gR = 10.25641025;
+
   private double gRCombin = circumference/gR;
   DriveTrn DT = new DriveTrn();
-  /**
-   * Creates a new auto.
-   */
+  RobotContainer RC = new RobotContainer();
+  Shooter S = new Shooter();
+  Indexer I = new Indexer();
+
+  static int x = 0;
+
+
   public auto() {
     // Use addRequirements() here to declare subsystem dependencies.
+    I.s_ultra1.setAutomaticMode(true);
+    I.s_ultra2.setAutomaticMode(true);
+    x = 0;
+    DT.m_talon1.setSelectedSensorPosition(0);
+    DT.m_talon4.setSelectedSensorPosition(0);
+NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(0);
+NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0);
     addRequirements(new DriveTrn(), new Shooter(), new Indexer(), new Collector());
     
 
@@ -29,6 +46,7 @@ public class auto extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,33 +59,33 @@ public class auto extends CommandBase {
     int state = 0;
     x++;
    if(lwheelSpin < 60 && x < 135){
-      left.set(-0.3);
-      right.set(-0.3);
+      RC.left.set(-0.3);
+      RC.right.set(-0.3);
     } else if(x > 0 && x < 255){
       if(x > 100 && x < 113){
-        m_hood.set(-.7);
+        S.m_hood.set(-.7);
       }else{
-        m_hood.set(0);
+        S.m_hood.set(0);
       }
-      m_shooterleft.set(1); 
-      m_shooterright.set(-1); 
+      S.m_shooterleft.set(1); 
+      S.m_shooterright.set(-1); 
       if(x > 135 && x < 255){
-        m_feeder.set(-.8);
-        m_indexer.set(.8); 
+        I.m_feeder.set(-.8);
+        I.m_indexer.set(.8); 
         //m_talon1.setSelectedSensorPosition(0);
         //m_talon4.setSelectedSensorPosition(0);
       } else {
-        m_feeder.set(0); 
-        m_indexer.set(0); 
+        I.m_feeder.set(0); 
+        I.m_indexer.set(0); 
       }
      } else if (x > 255) {
       if(lwheelSpin < 65.25){
-        left.set(0.4);
+        RC.left.set(0.4);
       } 
       if(rwheelSpin < 65.25){
-        right.set(-0.4);
+        RC.right.set(-0.4);
       } 
-      m_feeder.set(0); 
+      I.m_feeder.set(0); 
      }
   }
 

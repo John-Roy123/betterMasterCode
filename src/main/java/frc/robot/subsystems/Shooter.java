@@ -7,10 +7,12 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
@@ -20,12 +22,17 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class Shooter extends SubsystemBase implements Runnable{
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   private CANPIDController m_pidController;
-    final CANSparkMax m_shooterright;
-    final CANSparkMax m_shooterleft;
+    public final CANSparkMax m_shooterright;
+    public final CANSparkMax m_shooterleft;
+    public WPI_VictorSPX m_hood;
+
+    public AnalogPotentiometer s_hood;
 
     public static CANEncoder shootEncoder1;
     public static CANEncoder shootEncoder2;
 
+
+    final int hoodCANID = 7;
     final int shooterCANID_1 = 11;
     final int shooterCANID_2 = 14;
 
@@ -39,7 +46,8 @@ public class Shooter extends SubsystemBase implements Runnable{
    */
   public Shooter() {
 
- 
+  s_hood = new AnalogPotentiometer(0);
+  m_hood = new WPI_VictorSPX(hoodCANID);
 
   m_shooterleft = new CANSparkMax(shooterCANID_1, MotorType.kBrushless);
   m_shooterright = new CANSparkMax(shooterCANID_2, MotorType.kBrushless);

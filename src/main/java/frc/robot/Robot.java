@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,6 +34,7 @@ public class Robot extends TimedRobot {
   Limelight LL;
   Shooter S;
   Indexer I;
+  public Compressor comp;
 
   private boolean inRANGE;
   public Gyro gyro;
@@ -153,6 +155,20 @@ public class Robot extends TimedRobot {
   
 
  
+}
+@Override
+public void testInit() {
+  //comp.start();
+ }
+ 
+@Override
+public void testPeriodic() {
+  if(rc.operateController().getRawButton(7)) {
+    comp.start();
+  }
+   if(rc.operateController().getRawButton(8)) {
+     comp.stop();
+   }
 }
 }
 
