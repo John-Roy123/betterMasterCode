@@ -35,10 +35,13 @@ public class Limelight extends SubsystemBase implements Runnable{
    */
   public Limelight() {
     Thread LL = new Thread(this);
+    LL.run();
   }
   public void run(){
+
+
     while(true){
-      final double a2 = Math.toRadians(NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0));
+    final double a2 = Math.toRadians(NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0));
     final double a1 = Math.toRadians(13); //angle of limelight
   
     final double heightValue = (h2 - h1);

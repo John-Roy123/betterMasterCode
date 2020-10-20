@@ -52,6 +52,20 @@ public class Shooter extends SubsystemBase implements Runnable{
   m_shooterleft = new CANSparkMax(shooterCANID_1, MotorType.kBrushless);
   m_shooterright = new CANSparkMax(shooterCANID_2, MotorType.kBrushless);
 
+  
+
+  Thread shoot = new Thread(this);
+  shoot.run();
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+  }
+
+@Override
+public void run() {
+
   shootEncoder1 = m_shooterleft.getEncoder();
   shootEncoder2 = m_shooterright.getEncoder();
 
@@ -86,17 +100,7 @@ public class Shooter extends SubsystemBase implements Runnable{
   SmartDashboard.putNumber("Feed Forward", kFF);
   SmartDashboard.putNumber("Max Output", kMaxOutput);
   SmartDashboard.putNumber("Min Output", kMinOutput);
-
-  Thread shoot = new Thread(this);
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
-@Override
-public void run() {
+  
   while(true){
 	// TODO Auto-generated method stub
 	 // read PID coefficients from SmartDashboard

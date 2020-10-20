@@ -43,18 +43,9 @@ public class Indexer extends SubsystemBase implements Runnable{
    * Creates a new Feeder.
    */
   public Indexer() {
-    m_indexer = new WPI_TalonSRX(indexerCANID);
-
-    s_ultra1 = new Ultrasonic(7, 6);
-    s_ultra2 = new Ultrasonic(8, 9);
-
-    s_ultra1.setAutomaticMode(true);
-    s_ultra2.setAutomaticMode(true);
-
-    t_ultra1 = 0;
-
+  
     Thread x = new Thread(this);
-
+    x.run();
   }
 
   @Override
@@ -66,7 +57,16 @@ public class Indexer extends SubsystemBase implements Runnable{
   @Override
   public void run() {
     // TODO Auto-generated method stub
-    while(true){
+    m_indexer = new WPI_TalonSRX(indexerCANID);
+
+    s_ultra1 = new Ultrasonic(7, 6);
+    s_ultra2 = new Ultrasonic(8, 9);
+
+    s_ultra1.setAutomaticMode(true);
+    s_ultra2.setAutomaticMode(true);
+
+    t_ultra1 = 0;
+while(true){
       if(s_ultra1Range){
         if(t_indexreset == 1){
           ballcount++;
