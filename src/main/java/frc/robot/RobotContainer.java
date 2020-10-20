@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.Auto;
 import frc.robot.subsystems.DriveTrn;
 
 /**
@@ -27,7 +30,7 @@ public class RobotContainer {
   */
     public SpeedControllerGroup left = new SpeedControllerGroup(DriveTrn.m_talon1, DriveTrn.m_talon2, DriveTrn.m_talon5);
     public SpeedControllerGroup right = new SpeedControllerGroup(DriveTrn.m_talon3, DriveTrn.m_talon4, DriveTrn.m_talon6);
-  
+    public Auto auto = new Auto();
 
 
   /**
@@ -70,10 +73,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
 
-  /*
+  
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return auto;
   }
-  */
+  
 }

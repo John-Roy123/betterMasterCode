@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.Auto;
+import frc.robot.commands.Climb;
 import frc.robot.subsystems.DriveTrn;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Limelight;
@@ -105,10 +107,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    Command auto = rc.getAutonomousCommand();
 
     // schedule the autonomous command (example)
-
+    if (auto != null) {
+      auto.schedule();
+    }
   }
 
   /**
@@ -129,6 +133,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+
+    if (rc.operateController().getPOV() == 0){new Climb();}
+    else if(rc.operateController().getPOV() == 180){new Climb();}
+
     double setPoint = rc.operateController().getRawAxis(1)*S.maxRPM;
     SmartDashboard.putNumber("SetPoint", setPoint);
 
