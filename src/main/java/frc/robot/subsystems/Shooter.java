@@ -19,7 +19,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-public class Shooter extends SubsystemBase implements Runnable{
+public class Shooter extends SubsystemBase{
   public double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
   private CANPIDController m_pidController;
     public final CANSparkMax m_shooterright;
@@ -51,21 +51,6 @@ public class Shooter extends SubsystemBase implements Runnable{
 
   m_shooterleft = new CANSparkMax(shooterCANID_1, MotorType.kBrushless);
   m_shooterright = new CANSparkMax(shooterCANID_2, MotorType.kBrushless);
-
-  
-
-  Thread shoot = new Thread(this);
-  shoot.run();
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
-@Override
-public void run() {
-
   shootEncoder1 = m_shooterleft.getEncoder();
   shootEncoder2 = m_shooterright.getEncoder();
 
@@ -100,11 +85,13 @@ public void run() {
   SmartDashboard.putNumber("Feed Forward", kFF);
   SmartDashboard.putNumber("Max Output", kMaxOutput);
   SmartDashboard.putNumber("Min Output", kMinOutput);
-  
-  while(true){
-	// TODO Auto-generated method stub
-	 // read PID coefficients from SmartDashboard
-   double p = SmartDashboard.getNumber("P Gain", 0);
+
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    double p = SmartDashboard.getNumber("P Gain", 0);
    double i = SmartDashboard.getNumber("I Gain", 0);
    double d = SmartDashboard.getNumber("D Gain", 0);
    double iz = SmartDashboard.getNumber("I Zone", 0);
@@ -128,8 +115,7 @@ public void run() {
    } else {
      m_pidController.setReference(0 , ControlType.kVelocity);
    }
-     
+  }
 
-    }
-}
+
 }
