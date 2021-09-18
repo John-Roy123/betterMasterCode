@@ -16,7 +16,7 @@ import frc.robot.RobotContainer;
 
 
 
-public class Limelight extends SubsystemBase implements Runnable{
+public class Limelight extends SubsystemBase{
   RobotContainer rc = new RobotContainer();
   Robot r = new Robot();
   Shooter S = new Shooter();
@@ -34,13 +34,13 @@ public class Limelight extends SubsystemBase implements Runnable{
    * Creates a new Limelight.
    */
   public Limelight() {
-    Thread LL = new Thread(this);
-    LL.run();
+
   }
-  public void run(){
+ 
 
 
-    while(true){
+  @Override
+  public void periodic() {
     final double a2 = Math.toRadians(NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0));
     final double a1 = Math.toRadians(13); //angle of limelight
   
@@ -82,11 +82,6 @@ if(rc.driveController().getRawAxis(3) > 0.7 && (NetworkTableInstance.getDefault(
 
   SmartDashboard.putNumber("distance", heightValue/tanValue); //distance from target*/
 
-    }
-  }
-
-  @Override
-  public void periodic() {
   }
 
   public void limelightTracking(){
