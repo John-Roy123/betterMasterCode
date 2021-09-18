@@ -16,7 +16,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 
 
-public class DriveTrn extends SubsystemBase implements Runnable{
+public class DriveTrn extends SubsystemBase{
   RobotContainer rc = new RobotContainer();
   /**
    * Creates a new DriveTrn.
@@ -60,20 +60,15 @@ m_talon6.setNeutralMode(brake);
 m_talon1.setInverted(kInvertType);
 m_talon2.setInverted(kInvertType);
 m_talon5.setInverted(kInvertType);
-Thread DT = new Thread(this);
-DT.start();
 
   }
-  public void run(){
-    while(true){
-rc.drive(rc.driveController().getX(Hand.kRight), rc.driveController().getY(Hand.kLeft));
-    }
-  }
+
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     
+      rc.drive(rc.driveController().getX(Hand.kRight), rc.driveController().getY(Hand.kLeft));
     
   }
 }
