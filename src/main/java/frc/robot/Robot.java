@@ -7,6 +7,10 @@
 
 package frc.robot;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -14,7 +18,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Auto;
+import frc.robot.commands.auto;
 import frc.robot.commands.Climb;
 import frc.robot.subsystems.DriveTrn;
 import frc.robot.subsystems.Indexer;
@@ -38,6 +42,13 @@ public class Robot extends TimedRobot {
   Indexer I;
   public Compressor comp;
 
+  File XControls;
+  File YControls;
+  FileWriter xRecord;
+  FileWriter yRecord;
+  String xString;
+  String yString;
+  
   private boolean inRANGE;
   public Gyro gyro;
 
@@ -167,10 +178,48 @@ public class Robot extends TimedRobot {
 @Override
 public void testInit() {
   //comp.start();
+
+  XControls = new File("/home/lvuser/Xpos.txt");
+  YControls = new File("/home/lvuser/Ypos.txt");
+
+    try {
+      xRecord = new FileWriter(XControls);
+      yRecord = new FileWriter(YControls);
+
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+
  }
  
 @Override
 public void testPeriodic() {
+
+  Double xJoyStick = rc.driveController().getX(Hand.kRight);
+  Double yJoyStick = rc.driveController().getY(Hand.kLeft);
+
+
+  xString = String.valueOf(xJoyStick) + "\n";
+  yString = String.valueOf(yJoyStick) + "\n";
+
+    try {
+      xRecord.append(xString);
+      xRecord.flush();
+      yRecord.append(yString);
+      yRecord.flush();
+
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+
+
+
+
+
   if(rc.operateController().getRawButton(7)) {
     comp.start();
   }
@@ -178,5 +227,8 @@ public void testPeriodic() {
      comp.stop();
    }
 }
-}
 
+
+
+
+}
