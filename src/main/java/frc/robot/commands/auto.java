@@ -15,7 +15,7 @@ import frc.robot.subsystems.DriveTrn;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 
-public class Auto extends CommandBase {
+public class auto extends CommandBase {
 
   public double circumference = 6 * Math.PI;
   public double gR = 10.25641025;
@@ -29,7 +29,7 @@ public class Auto extends CommandBase {
   static int x = 0;
 
 
-  public Auto() {
+  public auto() {
     // Use addRequirements() here to declare subsystem dependencies.
     I.s_ultra1.setAutomaticMode(true);
     I.s_ultra2.setAutomaticMode(true);
