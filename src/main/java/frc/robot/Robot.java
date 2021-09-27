@@ -60,11 +60,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    rc = new RobotContainer();
-    DT = new DriveTrn();
-    LL = new Limelight();
-    S = new Shooter();
-    I = new Indexer();
+
     gyro = new Gyro(){
 
     @Override
@@ -139,11 +135,17 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-
+    rc = new RobotContainer();
+    DT = new DriveTrn();
+    LL = new Limelight();
+    S = new Shooter();
+    I = new Indexer();
   }
 
   @Override
   public void teleopPeriodic() {
+    
+   
 
     if (rc.operateController().getPOV() == 0){new Climb();}
     else if(rc.operateController().getPOV() == 180){new Climb();}
